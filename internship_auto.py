@@ -6,7 +6,6 @@ import urllib2
 import sys
 import time
 
-# adding path to geckodriver to the OS environment variable
 os.environ["PATH"] += os.pathsep + os.getcwd()
 download_path = "dataset/"
 
@@ -14,7 +13,6 @@ def main():
 	searchtext = sys.argv[1]
 	num_requested = int(sys.argv[2])
 	number_of_scrolls = num_requested / 400 + 1 
-	# number_of_scrolls * 400 images will be opened in the browser
 
 	if not os.path.exists(download_path + searchtext.replace(" ", "_")):
 		os.makedirs(download_path + searchtext.replace(" ", "_"))
@@ -31,10 +29,10 @@ def main():
 	
 	for _ in xrange(number_of_scrolls):
 		for __ in xrange(10):
-			# multiple scrolls needed to show all 400 images
+			
 			driver.execute_script("window.scrollBy(0, 1000000)")
 			time.sleep(0.2)
-		# to load next 400 images
+		
 		time.sleep(0.5)
 		try:
 			driver.find_element_by_xpath("//input[@value='Show more results']").click()
@@ -42,7 +40,6 @@ def main():
 			print ("Less images found:"), e
 			break
 
-	# imges = driver.find_elements_by_xpath('//div[@class="rg_meta"]') # not working anymore
 	imges = driver.find_elements_by_xpath('//div[contains(@class,"rg_meta")]')
 	print ("Total images:"), len(imges), "\n"
 	for img in imges:
